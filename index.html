@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CodePlay</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:#111322;color:#f5f5ff;font-family:Arial,sans-serif}
+.app{max-width:1000px;margin:auto}
+h1{color:#a99aff}
+textarea{width:100%;height:210px;resize:vertical;background:#20243a;color:#e7e6ff;border:1px solid #444765;border-radius:10px;padding:12px;font:14px monospace;line-height:1.5}
+label{display:block;margin:15px 0 8px;font-weight:bold}
+button{border:0;padding:12px 18px;border-radius:9px;background:#8c7bff;color:white;margin:10px 6px 12px 0;cursor:pointer}
+.secondary{background:#303650}
+iframe{width:100%;height:300px;background:white;border:0;border-radius:10px}
+.note{color:#b5bad0;font-size:14px}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>⌘ CodePlay</h1>
+<p class="note">Write code. Press Run. See your creation.</p>
+
+<label for="htmlCode">HTML editor</label>
+<textarea id="htmlCode" spellcheck="false"></textarea>
+
+<label for="cssCode">CSS editor</label>
+<textarea id="cssCode" spellcheck="false"></textarea>
+
+<button id="runBtn">▶ Run code</button>
+<button id="exampleBtn" class="secondary">Load example</button>
+<button id="resetBtn" class="secondary">Reset</button>
+
+<h3>Live preview</h3>
+<iframe id="preview" title="Your webpage preview" sandbox="allow-scripts"></iframe>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const starterHTML=`<main>
+  <h1>Hello, world! 👋</h1>
+  <p>I made my first webpage with CodePlay.</p>
+  <button onclick="document.querySelector('p').textContent='My code works! 🎉'">Click me</button>
+</main>`;
+const starterCSS=`body {
+  font-family: Arial, sans-serif;
+  padding: 24px;
+  background: #f3efff;
+  color: #39246c;
+}
+h1 { color: #7450d8; }
+button {
+  padding: 12px;
+  background: #7450d8;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+}`;
+function run(){
+const html=$("htmlCode").value;
+const css=$("cssCode").value;
+$("preview").srcdoc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css.replace(/<\/style/gi,"<\\/style")}</style></head><body>${html.replace(/<\/body/gi,"&lt;/body").replace(/<\/html/gi,"&lt;/html")}</body></html>`;
+}
+$("runBtn").onclick=run;
+$("exampleBtn").onclick=()=>{
+$("htmlCode").value=starterHTML;
+$("cssCode").value=starterCSS;
+run();
+};
+$("resetBtn").onclick=()=>{
+$("htmlCode").value="";
+$("cssCode").value="";
+$("preview").srcdoc="";
+};
+$("exampleBtn").click();
+</script>
+</body>
+</html>
